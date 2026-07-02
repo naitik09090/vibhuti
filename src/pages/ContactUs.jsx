@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import SEOMeta from '../components/SEOMeta';
+import { API_BASE_URL } from '../config';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function ContactUs() {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/leads/apply', {
+      const response = await axios.post(`${API_BASE_URL}/leads/apply`, {
         ...formData,
         loanType: 'General Inquiry',
         loanAmount: 0,

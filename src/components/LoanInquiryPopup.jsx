@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
+import { API_BASE_URL } from '../config';
 
 export default function LoanInquiryPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function LoanInquiryPopup() {
     payload.append('message', formData.message);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/leads/apply', payload, {
+      const response = await axios.post(`${API_BASE_URL}/leads/apply`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

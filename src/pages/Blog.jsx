@@ -9,6 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import SEOMeta from '../components/SEOMeta';
 import { blogPosts } from '../data/blogPosts';
+import { API_BASE_URL } from '../config';
 
 export default function Blog() {
   const { isAuthenticated, user, token } = useSelector((state) => state.auth);
@@ -32,7 +33,7 @@ export default function Blog() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/blogs');
+      const response = await axios.get(`${API_BASE_URL}/blogs`);
       const apiPosts = response.data.blogs || [];
       const hasSeoPost = apiPosts.some(p => p._id === 'seo-master-post');
       if (!hasSeoPost) {
@@ -63,7 +64,7 @@ export default function Blog() {
     setError(null);
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/blogs',
+        `${API_BASE_URL}/blogs`,
         { ...newBlog, author: user?.name || 'Administrator' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -105,7 +106,7 @@ export default function Blog() {
     if (!window.confirm('Delete this article?')) return;
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/blogs/${postId}`, {
+      await axios.delete(`${API_BASE_URL}/blogs/${postId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchPosts();

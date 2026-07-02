@@ -12,6 +12,7 @@ import {
   Trash2, Mail, Phone, ExternalLink, ShieldAlert, KeyRound, Loader2, AlertCircle
 } from 'lucide-react';
 import SEOMeta from '../components/SEOMeta';
+import { API_BASE_URL } from '../config';
 
 export default function AdminDashboard() {
   const { isAuthenticated, user, token, error: authError } = useSelector((state) => state.auth);
@@ -51,8 +52,8 @@ export default function AdminDashboard() {
 
     try {
       const authHeaders = { headers: { Authorization: `Bearer ${token}` } };
-      const statsRes = await axios.get('http://localhost:5000/api/dashboard/stats', authHeaders);
-      const leadsRes = await axios.get('http://localhost:5000/api/leads', authHeaders);
+      const statsRes = await axios.get(`${API_BASE_URL}/dashboard/stats`, authHeaders);
+      const leadsRes = await axios.get(`${API_BASE_URL}/leads`, authHeaders);
 
       if (statsRes.data.success) setStats(statsRes.data.stats);
       if (leadsRes.data.success) setLeads(leadsRes.data.leads);
@@ -87,14 +88,14 @@ export default function AdminDashboard() {
     dispatch(clearError());
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       if (response.data.success) {
         dispatch(authSuccess({ user: response.data.user, token: response.data.token }));
       }
     } catch (err) {
       console.error(err);
       const errMsg = err.response?.data?.message ||
-        (!err.response ? 'Cannot connect to server. Ensure backend is running on port 5000.' : 'Login failed.');
+        (!err.response ? 'Cannot connect to server. Ensure backend is running and API URL is correct.' : 'Login failed.');
       dispatch(authFailure(errMsg));
     } finally {
       setLoginLoading(false);
@@ -104,7 +105,7 @@ export default function AdminDashboard() {
   const handleStatusChange = async (leadId, newStatus) => {
     try {
       const authHeaders = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.patch(`http://localhost:5000/api/leads/${leadId}/status`, { status: newStatus }, authHeaders);
+      await axios.patch(`${API_BASE_URL}/leads/${leadId}/status`, { status: newStatus }, authHeaders);
       fetchDashboardData();
     } catch (err) {
       setLeads(prev => prev.map(lead => lead._id === leadId ? { ...lead, status: newStatus } : lead));

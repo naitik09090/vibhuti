@@ -4,6 +4,7 @@ import axios from 'axios';
 import confetti from 'canvas-confetti';
 import { ShieldAlert, Landmark, FileText, Upload, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import SEOMeta from '../components/SEOMeta';
+import { API_BASE_URL } from '../config';
 
 export default function ApplyLoanPage() {
   const location = useLocation();
@@ -58,7 +59,7 @@ export default function ApplyLoanPage() {
     });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/leads/apply', payload, {
+      const response = await axios.post(`${API_BASE_URL}/leads/apply`, payload, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
