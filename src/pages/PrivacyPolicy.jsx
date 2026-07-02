@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
     },
     {
       q: 'Can I request Vibhuti Enterprise to permanently delete my documents?',
-      a: 'Yes, you have the absolute right to request the deletion of your personal data. If your loan has been processed, rejected, or you choose not to proceed, you can email us at info@vibhutienterprise.com to request the permanent removal of all submitted soft copies, except for records we are legally required to maintain under national financial compliance laws.'
+      a: 'Yes, you have the absolute right to request the deletion of your personal data. If your loan has been processed, rejected, or you choose not to proceed, you can email us at vibhutienterprise5608@gmail.com to request the permanent removal of all submitted soft copies, except for records we are legally required to maintain under national financial compliance laws.'
     },
     {
       q: 'Does pulling my credit score through Vibhuti Enterprise count as a hard inquiry?',
@@ -240,8 +240,7 @@ export default function PrivacyPolicy() {
                 <Mail className="w-4 h-4 text-teal-400 mb-2" />
                 <h4 className="font-display font-semibold text-charcoal-100 text-xs uppercase tracking-wider mb-1">Email Inquiry</h4>
                 <p className="text-xs text-charcoal-400 leading-relaxed">
-                  info@vibhutienterprise.com<br />
-                  support@vibhutienterprise.com
+                  vibhutienterprise5608@gmail.com
                 </p>
               </div>
             </div>

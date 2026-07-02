@@ -71,9 +71,9 @@ export default function Footer() {
                 Gunjal Shiroya: +91 78628 08887
               </a>
             </div>
-            <a href="mailto:info@vibhutienterprise.com" className="flex items-center gap-2 text-sm text-charcoal-400 hover:text-teal-400 transition-colors">
+            <a href="mailto:vibhutienterprise5608@gmail.com" className="flex items-center gap-2 text-sm text-charcoal-400 hover:text-teal-400 transition-colors">
               <Mail className="w-3.5 h-3.5 text-teal-400" />
-              info@vibhutienterprise.com
+              vibhutienterprise5608@gmail.com
             </a>
           </div>
         </div>

@@ -106,8 +106,8 @@ export default function ContactUs() {
                     </div>
                     <div>
                       <p className="text-xs text-charcoal-500 uppercase font-medium tracking-wider">Email</p>
-                      <a href="mailto:info@vibhutienterprise.com" className="text-sm text-charcoal-100 hover:text-teal-400 transition-colors">
-                        info@vibhutienterprise.com
+                      <a href="mailto:vibhutienterprise5608@gmail.com" className="text-sm text-charcoal-100 hover:text-teal-400 transition-colors">
+                        vibhutienterprise5608@gmail.com
                       </a>
                     </div>
                   </div>

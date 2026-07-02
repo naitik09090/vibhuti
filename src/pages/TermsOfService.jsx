@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  ShieldCheck, HelpCircle, FileText, ChevronDown, Landmark, 
+import {
+  ShieldCheck, HelpCircle, FileText, ChevronDown, Landmark,
   Mail, Phone, MapPin, ArrowRight, Lock, CheckCircle2, Scale, Info,
   UserCheck, MessageSquare
 } from 'lucide-react';
@@ -43,7 +43,7 @@ export default function TermsOfService() {
       />
 
       <div className="py-20 max-w-3xl mx-auto px-6 text-charcoal-400 text-sm leading-relaxed space-y-12">
-        
+
         {/* Header Hero */}
         <div className="space-y-4 text-center border-b border-charcoal-800/40 pb-10">
           <div className="section-label mx-auto w-fit">
@@ -60,7 +60,7 @@ export default function TermsOfService() {
 
         {/* Sections */}
         <div className="space-y-10">
-          
+
           <div className="space-y-3">
             <h2 className="font-heading text-xl font-bold text-charcoal-100 flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-teal-400" />
@@ -213,8 +213,7 @@ export default function TermsOfService() {
                 <Mail className="w-4 h-4 text-teal-400 mb-2" />
                 <h4 className="font-display font-semibold text-charcoal-100 text-xs uppercase tracking-wider mb-1">Email Inquiry</h4>
                 <p className="text-xs text-charcoal-400 leading-relaxed">
-                  info@vibhutienterprise.com<br />
-                  support@vibhutienterprise.com
+                  vibhutienterprise5608@gmail.com
                 </p>
               </div>
             </div>
