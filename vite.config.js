@@ -7,5 +7,19 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-charts': ['recharts'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-swiper': ['swiper'],
+          'vendor-gsap': ['gsap'],
+          'vendor-icons': ['lucide-react'],
+        }
+      }
+    }
   }
 })
