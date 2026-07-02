@@ -1,9 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Landmark } from 'lucide-react';
 
 export default function Footer() {
+  const location = useLocation();
   const currentYear = new Date().getFullYear();
+
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="border-t border-charcoal-800 bg-charcoal-950 pt-12 pb-8">

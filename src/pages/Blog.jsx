@@ -30,8 +30,8 @@ export default function Blog() {
     coverImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80'
   });
 
-  const fetchPosts = async () => {
-    setLoading(true);
+  const fetchPosts = async (isInitial = false) => {
+    if (isInitial) setLoading(true);
     try {
       const response = await axios.get(`${API_BASE_URL}/blogs`);
       const apiPosts = response.data.blogs || [];
@@ -43,15 +43,22 @@ export default function Blog() {
       }
     } catch (err) {
       console.error(err);
-      setPosts(blogPosts);
+      if (isInitial) setPosts(blogPosts);
     } finally {
-      setIsWriteMode(false);
-      setLoading(false);
+      if (isInitial) {
+        setIsWriteMode(false);
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(true);
+    // Poll updated blogs every 5 seconds to show admin updates automatically in background
+    const interval = setInterval(() => {
+      fetchPosts(false);
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleWriteChange = (e) => {

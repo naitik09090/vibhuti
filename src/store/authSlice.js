@@ -5,12 +5,27 @@ const user = localStorage.getItem('vibhuti_user')
   ? JSON.parse(localStorage.getItem('vibhuti_user')) 
   : null;
 
+const adminToken = localStorage.getItem('vibhuti_admin_token');
+const adminUser = localStorage.getItem('vibhuti_admin_user')
+  ? JSON.parse(localStorage.getItem('vibhuti_admin_user'))
+  : null;
+
 const initialState = {
+  // Customer Session
   user: user,
   token: token,
   isAuthenticated: !!token,
+  
+  // Admin Session
+  adminUser: adminUser,
+  adminToken: adminToken,
+  isAdminAuthenticated: !!adminToken,
+
   loading: false,
   error: null,
+  
+  adminLoading: false,
+  adminError: null,
 };
 
 const authSlice = createSlice({
@@ -52,9 +67,46 @@ const authSlice = createSlice({
     },
     clearError: (state) => {
       state.error = null;
+    },
+
+    // Admin Specific Reducers
+    adminAuthStart: (state) => {
+      state.adminLoading = true;
+      state.adminError = null;
+    },
+    adminAuthSuccess: (state, action) => {
+      state.adminLoading = false;
+      state.isAdminAuthenticated = true;
+      state.adminUser = action.payload.user;
+      state.adminToken = action.payload.token;
+      state.adminError = null;
+      localStorage.setItem('vibhuti_admin_token', action.payload.token);
+      localStorage.setItem('vibhuti_admin_user', JSON.stringify(action.payload.user));
+    },
+    adminAuthFailure: (state, action) => {
+      state.adminLoading = false;
+      state.isAdminAuthenticated = false;
+      state.adminUser = null;
+      state.adminToken = null;
+      state.adminError = action.payload;
+    },
+    adminLogout: (state) => {
+      state.adminLoading = false;
+      state.isAdminAuthenticated = false;
+      state.adminUser = null;
+      state.adminToken = null;
+      state.adminError = null;
+      localStorage.removeItem('vibhuti_admin_token');
+      localStorage.removeItem('vibhuti_admin_user');
+    },
+    adminClearError: (state) => {
+      state.adminError = null;
     }
   },
 });
 
-export const { authStart, authSuccess, authFailure, logout, updateProfile, clearError } = authSlice.actions;
+export const {
+  authStart, authSuccess, authFailure, logout, updateProfile, clearError,
+  adminAuthStart, adminAuthSuccess, adminAuthFailure, adminLogout, adminClearError
+} = authSlice.actions;
 export default authSlice.reducer;

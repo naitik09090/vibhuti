@@ -14,6 +14,8 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 // Middleware Imports
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import User from './models/User.js';
+import BlogPost from './models/BlogPost.js';
+import { blogPosts } from './data/staticBlogs.js';
 
 // Serve static uploaded documents
 const __filename = fileURLToPath(import.meta.url);
@@ -79,8 +81,36 @@ const seedAdmin = async () => {
   }
 };
 
-// Execute seeding after a short timeout to allow DB connection to settle
-setTimeout(seedAdmin, 3000);
+// Automatic Seeding of Static Blog Posts
+const seedBlogs = async () => {
+  try {
+    for (const post of blogPosts) {
+      const exists = await BlogPost.findById(post._id);
+      if (!exists) {
+        await BlogPost.create({
+          _id: post._id,
+          title: post.title,
+          summary: post.summary,
+          content: post.content,
+          author: post.author,
+          tags: post.tags,
+          coverImage: post.coverImage,
+          createdAt: post.createdAt ? new Date(post.createdAt) : new Date(),
+        });
+        console.log(`Startup Seeding: Added blog post "${post.title.substring(0, 30)}..."`);
+      }
+    }
+  } catch (error) {
+    console.warn('Startup blog seeding skipped or MongoDB offline:', error.message);
+  }
+};
+
+// Execute all startup seeds after a short timeout to allow DB connection to settle
+const runAllSeeds = async () => {
+  await seedAdmin();
+  await seedBlogs();
+};
+setTimeout(runAllSeeds, 3000);
 
 // Error Middlewares
 app.use(notFound);

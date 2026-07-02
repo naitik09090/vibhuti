@@ -1,5 +1,6 @@
 import Lead from '../models/Lead.js';
 import nodemailer from 'nodemailer';
+import mongoose from 'mongoose';
 
 // Helper: Setup Nodemailer Transporter
 const getTransporter = () => {
@@ -125,7 +126,7 @@ export const updateLeadStatus = async (req, res) => {
   try {
     const { status, feedbackNotes } = req.body;
 
-    const lead = await Lead.findById(req.id || req.params.id);
+    const lead = await Lead.findById(req.params.id);
     if (!lead) {
       return res.status(404).json({ success: false, message: 'Lead record not found.' });
     }
@@ -141,6 +142,83 @@ export const updateLeadStatus = async (req, res) => {
     res.json({
       success: true,
       lead: updatedLead,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Update a lead completely
+// @route   PUT /api/leads/:id
+// @access  Private/Admin
+export const updateLead = async (req, res) => {
+  try {
+    const { customerName, email, phone, loanType, loanAmount, loanTenureYears, message, status } = req.body;
+
+    const lead = await Lead.findById(req.params.id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Lead record not found.' });
+    }
+
+    if (customerName !== undefined) lead.customerName = customerName;
+    if (email !== undefined) lead.email = email;
+    if (phone !== undefined) lead.phone = phone;
+    if (loanType !== undefined) lead.loanType = loanType;
+    if (loanAmount !== undefined) lead.loanAmount = Number(loanAmount) || 0;
+    if (loanTenureYears !== undefined) lead.loanTenureYears = Number(loanTenureYears) || 0;
+    if (message !== undefined) lead.message = message;
+    if (status !== undefined) lead.status = status;
+
+    const updatedLead = await lead.save();
+
+    res.json({
+      success: true,
+      lead: updatedLead,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Delete a lead
+// @route   DELETE /api/leads/:id
+// @access  Private/Admin
+export const deleteLead = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if ID is a valid MongoDB ObjectId to handle fallback mock data gracefully
+    if (!mongoose.Types.ObjectId.isValid(id) || id.startsWith('lead-')) {
+      return res.json({
+        success: true,
+        message: 'Lead record removed successfully (mock fallback).'
+      });
+    }
+
+    const lead = await Lead.findByIdAndDelete(id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Lead record not found.' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Lead record deleted successfully.',
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Get logged in user's leads
+// @route   GET /api/leads/my-leads
+// @access  Private
+export const getMyLeads = async (req, res) => {
+  try {
+    const leads = await Lead.find({ email: req.user.email }).sort({ createdAt: -1 });
+    res.json({
+      success: true,
+      count: leads.length,
+      leads,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

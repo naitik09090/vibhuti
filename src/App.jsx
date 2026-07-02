@@ -18,8 +18,10 @@ import ApplyLoanPage from './pages/ApplyLoanPage';
 import Blog from './pages/Blog';
 import ContactUs from './pages/ContactUs';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Login from './pages/Login';
 
 // Helper component: Scroll page to top on route change
 function ScrollToTop() {
@@ -54,6 +56,8 @@ export default function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
             </Routes>

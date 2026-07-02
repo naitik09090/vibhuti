@@ -40,31 +40,31 @@ export default function FloatingActions() {
         <ArrowUp className="w-4 h-4" />
       </button>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-charcoal-950/95 backdrop-blur-md border-t border-charcoal-800 px-4 py-2.5 flex items-center justify-between gap-2">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-charcoal-950/95 backdrop-blur-md border-t border-charcoal-800 px-3 py-2.5 flex items-center justify-between gap-2">
         <button
           onClick={() => setShowCallMenu(!showCallMenu)}
-          className="flex-1 py-2.5 rounded-lg bg-charcoal-800 border border-charcoal-700 text-charcoal-100 text-xs font-medium flex items-center justify-center gap-1.5"
+          className="flex-1 min-w-0 px-2 py-2.5 rounded-lg bg-charcoal-800 border border-charcoal-700 text-charcoal-100 text-xs font-semibold tracking-tight flex items-center justify-center gap-1"
         >
-          <Phone className="w-3.5 h-3.5 text-teal-400" />
-          Call Us
+          <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
+          <span className="truncate">Call Us</span>
         </button>
 
         <button
           onClick={() => navigate('/apply-loan')}
-          className="flex-[2] py-2.5 rounded-lg bg-teal-500 text-charcoal-950 text-xs font-semibold flex items-center justify-center gap-1.5"
+          className="flex-[1.5] min-w-0 px-2 py-2.5 rounded-lg bg-teal-500 text-charcoal-950 text-xs font-bold flex items-center justify-center gap-1"
         >
-          <Send className="w-3.5 h-3.5" />
-          Apply Now
+          <Send className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="truncate">Apply Now</span>
         </button>
 
         <a
           href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 py-2.5 rounded-lg bg-emerald-700 border border-emerald-600/40 text-white text-xs font-medium flex items-center justify-center gap-1.5"
+          className="flex-1 min-w-0 px-2 py-2.5 rounded-lg bg-emerald-700 border border-emerald-600/40 text-white text-xs font-semibold tracking-tight flex items-center justify-center gap-1"
         >
-          <MessageSquare className="w-3.5 h-3.5" />
-          WhatsApp
+          <MessageSquare className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="truncate">WhatsApp</span>
         </a>
 
         {showCallMenu && (

@@ -81,3 +81,34 @@ export const deleteBlog = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// @desc    Update a blog post
+// @route   PUT /api/blogs/:id
+// @access  Private/Admin
+export const updateBlog = async (req, res) => {
+  try {
+    const { title, summary, content, author, tags, coverImage } = req.body;
+
+    const blog = await BlogPost.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({ success: false, message: 'Article not found.' });
+    }
+
+    blog.title = title || blog.title;
+    blog.summary = summary || blog.summary;
+    blog.content = content || blog.content;
+    blog.author = author || blog.author;
+    blog.tags = tags || blog.tags;
+    blog.coverImage = coverImage || blog.coverImage;
+
+    const updatedBlog = await blog.save();
+
+    res.json({
+      success: true,
+      blog: updatedBlog,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
