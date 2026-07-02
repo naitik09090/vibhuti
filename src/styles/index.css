@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-charcoal-950 text-charcoal-300 font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-charcoal-100;
+  }
+
+  ::selection {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: inherit;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-charcoal-900 border border-charcoal-800 rounded-xl shadow-sm transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply card hover:border-teal-500/30 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm text-white bg-teal-600 hover:bg-teal-500 transition-all duration-200 cursor-pointer shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm text-teal-600 border border-teal-500/30 hover:bg-teal-50 transition-all duration-200 cursor-pointer;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm text-white bg-teal-500 hover:bg-teal-600 transition-all duration-200 cursor-pointer shadow-sm;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-teal-600 font-semibold;
+  }
+
+  .section-label {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-charcoal-800 border border-charcoal-700/50 text-[10px] font-semibold text-charcoal-400 uppercase tracking-wider;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666666;
+}
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
