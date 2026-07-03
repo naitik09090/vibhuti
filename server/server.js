@@ -29,10 +29,23 @@ connectDB();
 
 const app = express();
 
-// Configure CORS (Enable Frontend Dev Server)
+// Configure CORS (Enable Frontend Dev Server & Production Deployments)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5000'
+];
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    if (!origin) return callback(null, true);
+    
+    const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+    const isVercel = origin.endsWith('.vercel.app');
+    const isAllowedCustom = process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL;
+    
+    if (isLocalhost || isVercel || isAllowedCustom || process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
     callback(new Error('Not allowed by CORS'));
@@ -116,7 +129,11 @@ setTimeout(runAllSeeds, 3000);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server launched in development on port: ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server launched on port: ${PORT}`);
+  });
+}
+
+export default app;
