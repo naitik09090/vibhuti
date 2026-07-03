@@ -39,15 +39,20 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    
+    if (!origin) return callback(null, true); // Allow server-to-server / curl
+
     const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
     const isVercel = origin.endsWith('.vercel.app');
+    const isNetlify = origin.endsWith('.netlify.app');
     const isAllowedCustom = process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL;
-    
-    if (isLocalhost || isVercel || isAllowedCustom || process.env.NODE_ENV !== 'production') {
+
+    if (isLocalhost || isVercel || isNetlify || isAllowedCustom) {
       return callback(null, true);
     }
+
+    // Allow all origins in non-production for easier dev
+    if (process.env.NODE_ENV !== 'production') return callback(null, true);
+
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true
@@ -129,11 +134,10 @@ setTimeout(runAllSeeds, 3000);
 app.use(notFound);
 app.use(errorHandler);
 
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server launched on port: ${PORT}`);
-  });
-}
+// Start server (works on Render, Railway, local — not Vercel serverless)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT} | ENV: ${process.env.NODE_ENV || 'development'}`);
+});
 
 export default app;
