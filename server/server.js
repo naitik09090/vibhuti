@@ -134,10 +134,14 @@ setTimeout(runAllSeeds, 3000);
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server (works on Render, Railway, local — not Vercel serverless)
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT} | ENV: ${process.env.NODE_ENV || 'development'}`);
-});
+// Start server only in non-serverless environments (local dev, Render, Railway)
+// On Netlify Functions / AWS Lambda, listening to a port is not needed
+const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME;
+if (!isServerless) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT} | ENV: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
 
 export default app;

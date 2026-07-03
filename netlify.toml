@@ -1,8 +1,18 @@
 [build]
-  command = "npm run build"
+  command = "npm run build && cd server && npm install"
   publish = "dist"
 
-# Redirects rule to support React Router client-side routing on reload
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Route all API calls to the serverless Express function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Support React Router client-side routing on page reload
 [[redirects]]
   from = "/*"
   to = "/index.html"
