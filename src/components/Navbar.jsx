@@ -81,9 +81,16 @@ export default function Navbar() {
     return null;
   }
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const confirmLogout = () => {
     setIsOpen(false);
+    setShowLogoutConfirm(true);
+  };
+
+  const doLogout = () => {
+    setShowLogoutConfirm(false);
+    dispatch(logout());
     navigate('/');
   };
 
@@ -206,7 +213,7 @@ export default function Navbar() {
                   <span className="max-w-[100px] truncate">{user.name}</span>
                 </div>
                 <button
-                  onClick={handleLogout}
+                  onClick={confirmLogout}
                   className="text-charcoal-500 hover:text-red-400 transition-colors"
                   title="Logout"
                 >
@@ -225,119 +232,157 @@ export default function Navbar() {
             )}
           </div>
 
+      {/* Mobile hamburger button (in nav) */}
           <div className="md:hidden flex items-center gap-3">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-charcoal-300 hover:text-charcoal-100 transition-colors"
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-charcoal-800/60 border border-charcoal-700/50 text-charcoal-300 hover:text-charcoal-100 hover:bg-charcoal-700 transition-all"
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </div>
+      </nav>
 
+      {/* Mobile Drawer Overlay */}
       {isOpen && (
-        <div className="md:hidden border-t border-charcoal-800 bg-charcoal-950">
-          <div className="px-4 pt-2 pb-4 space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-sm transition-colors ${isActive(link.path)
-                  ? 'bg-charcoal-800 text-teal-400 font-medium'
-                  : 'text-charcoal-300 hover:bg-charcoal-800'
-                  }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+        <div
+          className="fixed inset-0 z-[998] bg-black/60 backdrop-blur-sm md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-            <div className="border-t border-charcoal-800 my-2 pt-2">
-              <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500 mb-1">
-                Calculators
-              </p>
-              <Link
-                to="/emi-calculator"
-                onClick={() => setIsOpen(false)}
-                className="block px-6 py-2 rounded-md text-sm text-charcoal-300 hover:bg-charcoal-800"
-              >
-                EMI Calculator
-              </Link>
-              <Link
-                to="/loan-calculator"
-                onClick={() => setIsOpen(false)}
-                className="block px-6 py-2 rounded-md text-sm text-charcoal-300 hover:bg-charcoal-800"
-              >
-                Eligibility Checker
-              </Link>
+      {/* Mobile Drawer Panel */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[85vw] max-w-[340px] z-[999] md:hidden flex flex-col bg-charcoal-950 border-l border-charcoal-800/80 shadow-2xl transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-800">
+          <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg">
+              <Landmark className="w-4 h-4 text-charcoal-950" />
             </div>
-
-            <div className="border-t border-charcoal-800 my-2 pt-2">
-              <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500 mb-1">
-                Legal
-              </p>
-              <Link
-                to="/privacy-policy"
-                onClick={() => setIsOpen(false)}
-                className="block px-6 py-2 rounded-md text-sm text-charcoal-300 hover:bg-charcoal-800"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms-of-service"
-                onClick={() => setIsOpen(false)}
-                className="block px-6 py-2 rounded-md text-sm text-charcoal-300 hover:bg-charcoal-800"
-              >
-                Terms of Service
-              </Link>
+            <div>
+              <span className="font-heading text-sm tracking-wider font-bold text-charcoal-100">VIBHUTI</span>
+              <span className="block font-sans text-[7px] tracking-[0.2em] text-teal-400 uppercase -mt-0.5 font-semibold">Enterprise</span>
             </div>
+          </Link>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-charcoal-800/60 border border-charcoal-700/50 text-charcoal-400 hover:text-charcoal-100 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
-            <div className="border-t border-charcoal-800 my-2 pt-3 flex flex-col gap-2">
-              <Link
-                to="/apply-loan"
-                onClick={() => setIsOpen(false)}
-                className="btn-accent w-full text-center text-xs"
-              >
-                Apply Now
-              </Link>
-              {isAuthenticated ? (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 px-3 text-charcoal-300 text-sm">
-                    <User className="w-4 h-4 text-teal-400" />
-                    <span>{user.name}</span>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-red-800/50 text-red-400 hover:bg-red-950/30 transition-colors text-sm"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="w-full text-center text-xs text-charcoal-300 hover:text-teal-400 font-semibold py-2 bg-charcoal-800/40 border border-charcoal-700/60 rounded-md transition-colors"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/contact"
-                    onClick={() => setIsOpen(false)}
-                    className="btn-primary w-full text-center text-xs"
-                  >
-                    Get in Touch
-                  </Link>
-                </>
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+
+          {/* Main nav links */}
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                isActive(link.path)
+                  ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20'
+                  : 'text-charcoal-300 hover:text-charcoal-100 hover:bg-charcoal-800/60'
+              }`}
+            >
+              {link.name}
+              {isActive(link.path) && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-teal-400" />
               )}
-            </div>
+            </Link>
+          ))}
+
+          {/* Calculators section */}
+          <div className="pt-3">
+            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-charcoal-600">Calculators</p>
+            <Link to="/emi-calculator" onClick={() => setIsOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${isActive('/emi-calculator') ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'text-charcoal-400 hover:text-charcoal-100 hover:bg-charcoal-800/60'}`}>
+              <div className="w-7 h-7 rounded-lg bg-charcoal-800 border border-charcoal-700/50 flex items-center justify-center flex-shrink-0">
+                <span className="text-[10px] font-bold text-teal-400">₹</span>
+              </div>
+              EMI Calculator
+            </Link>
+            <Link to="/loan-calculator" onClick={() => setIsOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${isActive('/loan-calculator') ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'text-charcoal-400 hover:text-charcoal-100 hover:bg-charcoal-800/60'}`}>
+              <div className="w-7 h-7 rounded-lg bg-charcoal-800 border border-charcoal-700/50 flex items-center justify-center flex-shrink-0">
+                <span className="text-[10px] font-bold text-teal-400">%</span>
+              </div>
+              Eligibility Checker
+            </Link>
+          </div>
+
+          {/* Legal section */}
+          <div className="pt-2">
+            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-widest text-charcoal-600">Legal</p>
+            <Link to="/privacy-policy" onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-charcoal-400 hover:text-charcoal-100 hover:bg-charcoal-800/60 transition-all">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-of-service" onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-charcoal-400 hover:text-charcoal-100 hover:bg-charcoal-800/60 transition-all">
+              Terms of Service
+            </Link>
           </div>
         </div>
-      )}
-      </nav>
+
+        {/* Drawer Footer */}
+        <div className="px-4 py-4 border-t border-charcoal-800 space-y-3">
+          {/* Apply Now CTA */}
+          <Link
+            to="/apply-loan"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-charcoal-950 transition-all shadow-lg shadow-teal-900/30"
+          >
+            Apply Now
+          </Link>
+
+          {isAuthenticated ? (
+            <>
+              {/* User chip */}
+              <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-charcoal-800/60 border border-charcoal-700/40">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500/20 to-teal-700/20 border border-teal-600/30 flex items-center justify-center flex-shrink-0">
+                  <User className="w-4 h-4 text-teal-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-charcoal-100 truncate">{user.name}</p>
+                  <p className="text-[10px] text-charcoal-500">Logged in</p>
+                </div>
+              </div>
+              <button
+                onClick={confirmLogout}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold text-red-400 border border-red-800/40 hover:bg-red-950/30 transition-all cursor-pointer bg-transparent"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </>
+          ) : (
+            <div className="flex gap-2">
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="flex-1 text-center text-sm font-semibold text-charcoal-300 py-2.5 rounded-xl border border-charcoal-700/60 hover:bg-charcoal-800/60 hover:text-charcoal-100 transition-all"
+              >
+                Login
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setIsOpen(false)}
+                className="flex-1 text-center text-sm font-semibold text-teal-400 py-2.5 rounded-xl border border-teal-700/40 hover:bg-teal-900/20 transition-all"
+              >
+                Contact
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+
 
       {/* Loan Status Modal Notification (Approved or Rejected) */}
       {showNotifyModal && notifyLead && (
@@ -415,6 +460,50 @@ export default function Navbar() {
             >
               {notifyLead.status === 'Approved' ? 'Great, Thank You!' : 'Close'}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowLogoutConfirm(false)}
+          />
+
+          {/* Modal Card */}
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-charcoal-700/60 bg-charcoal-900 shadow-2xl p-6 flex flex-col items-center gap-4 animate-[fadeInScale_0.2s_ease-out]">
+            {/* Icon */}
+            <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center">
+              <LogOut className="w-6 h-6 text-red-400" />
+            </div>
+
+            {/* Text */}
+            <div className="text-center space-y-1.5">
+              <h3 className="text-charcoal-100 font-display font-bold text-lg">Confirm Logout</h3>
+              <p className="text-charcoal-400 text-sm leading-relaxed">
+                Are you sure you want to logout from your account? You will need to login again to access your applications.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 w-full mt-1">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal-300 bg-charcoal-800 hover:bg-charcoal-700 border border-charcoal-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={doLogout}
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-500 border border-red-500/40 transition-colors flex items-center justify-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Yes, Logout
+              </button>
+            </div>
           </div>
         </div>
       )}

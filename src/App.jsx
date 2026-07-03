@@ -27,9 +27,35 @@ import Login from './pages/Login';
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Stop Lenis animation, jump DOM scroll to 0 instantly, then restart
+    if (window.__lenis) {
+      window.__lenis.stop();
+      // Directly reset DOM scroll — no animation, instant
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.__lenis.scrollTo(0, { immediate: true });
+      window.__lenis.start();
+    } else {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
   }, [pathname]);
   return null;
+}
+
+// Routes where Footer and FloatingActions should be hidden
+const NO_FOOTER_ROUTES = ['/login', '/admin/login', '/admin'];
+
+function LayoutExtras() {
+  const { pathname } = useLocation();
+  const hideExtras = NO_FOOTER_ROUTES.includes(pathname);
+  if (hideExtras) return null;
+  return (
+    <>
+      <FloatingActions />
+      <Footer />
+    </>
+  );
 }
 
 export default function App() {
@@ -40,7 +66,7 @@ export default function App() {
         {/* Global Conversion Popup */}
         <LoanInquiryPopup />
 
-        <div className="flex flex-col min-h-screen bg-charcoal-950 pb-16 md:pb-0">
+        <div className="flex flex-col min-h-screen bg-charcoal-950 pb-16">
           {/* Navigation Bar */}
           <Navbar />
 
@@ -63,11 +89,8 @@ export default function App() {
             </Routes>
           </main>
 
-          {/* Floating Actions (Direct Call, WhatsApp, and Apply CTA) */}
-          <FloatingActions />
-
-          {/* Footer component */}
-          <Footer />
+          {/* Footer and FloatingActions (hidden on login/admin pages) */}
+          <LayoutExtras />
         </div>
       </LenisWrapper>
     </Router>

@@ -312,7 +312,15 @@ export default function AdminDashboard() {
     };
   }, [isAdminAuthenticated, token, activeTab, user, navigate]);
 
+  const [showAdminLogoutConfirm, setShowAdminLogoutConfirm] = useState(false);
+
   const handleLogout = () => {
+    setIsMobileSidebarOpen(false);
+    setShowAdminLogoutConfirm(true);
+  };
+
+  const doAdminLogout = () => {
+    setShowAdminLogoutConfirm(false);
     dispatch(adminLogout());
   };
 
@@ -365,7 +373,7 @@ export default function AdminDashboard() {
     <>
       <SEOMeta title="Admin Dashboard" description="Vibhuti Enterprise lead management dashboard." />
 
-      <div className="min-h-screen flex flex-col md:flex-row bg-charcoal-950 text-charcoal-300">
+      <div className="min-h-screen flex flex-col md:flex-row bg-charcoal-950 text-charcoal-300 overflow-x-hidden">
         {/* Mobile Header Bar */}
         <div className="md:hidden flex items-center justify-between bg-charcoal-900 border-b border-charcoal-800 px-4 py-3 sticky top-0 z-40">
           <div className="flex items-center gap-2">
@@ -453,7 +461,7 @@ export default function AdminDashboard() {
             </Link>
 
             <button
-              onClick={() => { handleLogout(); setIsMobileSidebarOpen(false); }}
+              onClick={handleLogout}
               className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-semibold text-red-400 hover:text-red-300 hover:bg-red-950/20 border-0 bg-transparent cursor-pointer transition-all text-left"
             >
               <LogOut className="w-4 h-4 flex-shrink-0" />
@@ -525,7 +533,7 @@ export default function AdminDashboard() {
         </aside>
 
         {/* Admin Content Area (responsive padding) */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-8 lg:p-12 space-y-8">
+        <main className="flex-1 min-w-0 overflow-y-auto p-4 sm:p-8 lg:p-12 space-y-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h1 className="font-heading text-2xl font-bold">Admin <span className="text-gradient">Dashboard</span></h1>
@@ -585,25 +593,41 @@ export default function AdminDashboard() {
 
               {/* Chart & Notes */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 card p-5 border-charcoal-700/50">
-                  <h3 className="font-display font-semibold text-charcoal-100 text-sm mb-5">Weekly Lead Volume</h3>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <AreaChart data={chartData}>
-                      <defs>
-                        <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#0d9488" stopOpacity={0.4} />
-                          <stop offset="95%" stopColor="#0d9488" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis dataKey="name" stroke="#9ca3af" style={{ fontSize: '10px' }} />
-                      <YAxis stroke="#9ca3af" style={{ fontSize: '10px' }} />
-                      <ChartTooltip
-                        contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '12px', color: '#374151' }}
-                      />
-                      <Area type="monotone" dataKey="leads" stroke="#0d9488" fillOpacity={1} fill="url(#colorLeads)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
+                <div className="lg:col-span-2 card p-5 border-charcoal-700/50 overflow-hidden">
+                  <h3 className="font-display font-semibold text-charcoal-100 text-sm mb-4">Weekly Lead Volume</h3>
+                  <div className="w-full" style={{ minHeight: 200 }}>
+                    <ResponsiveContainer width="100%" height={200}>
+                      <AreaChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#0d9488" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#0d9488" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis
+                          dataKey="name"
+                          stroke="#6b7280"
+                          tick={{ fontSize: 10, fill: '#9ca3af' }}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <YAxis
+                          stroke="#6b7280"
+                          tick={{ fontSize: 10, fill: '#9ca3af' }}
+                          tickLine={false}
+                          axisLine={false}
+                          width={32}
+                          allowDecimals={false}
+                        />
+                        <ChartTooltip
+                          contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px', color: '#f3f4f6' }}
+                          cursor={{ stroke: '#0d9488', strokeWidth: 1, strokeDasharray: '4 4' }}
+                        />
+                        <Area type="monotone" dataKey="leads" stroke="#0d9488" fillOpacity={1} fill="url(#colorLeads)" strokeWidth={2} dot={false} activeDot={{ r: 4, fill: '#0d9488', strokeWidth: 0 }} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
 
                 <div className="card p-5 border-teal-500/10 bg-gradient-to-br from-charcoal-900 to-charcoal-950 flex flex-col justify-between">
@@ -1085,6 +1109,49 @@ export default function AdminDashboard() {
           )}
         </main>
       </div>
+      {/* Admin Logout Confirmation Modal */}
+      {showAdminLogoutConfirm && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowAdminLogoutConfirm(false)}
+          />
+
+          {/* Modal Card */}
+          <div className="relative z-10 w-full max-w-sm rounded-2xl border border-charcoal-700/60 bg-charcoal-900 shadow-2xl p-6 flex flex-col items-center gap-4" style={{ animation: 'fadeInScale 0.2s ease-out' }}>
+            {/* Icon */}
+            <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center">
+              <LogOut className="w-6 h-6 text-red-400" />
+            </div>
+
+            {/* Text */}
+            <div className="text-center space-y-1.5">
+              <h3 className="text-charcoal-100 font-display font-bold text-lg">Confirm Admin Logout</h3>
+              <p className="text-charcoal-400 text-sm leading-relaxed">
+                Are you sure you want to logout from the Admin Dashboard? You will need to login again to access the panel.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 w-full mt-1">
+              <button
+                onClick={() => setShowAdminLogoutConfirm(false)}
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-semibold text-charcoal-300 bg-charcoal-800 hover:bg-charcoal-700 border border-charcoal-700 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={doAdminLogout}
+                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-500 border border-red-500/40 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                Yes, Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

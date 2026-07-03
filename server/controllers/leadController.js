@@ -1,6 +1,12 @@
 import Lead from '../models/Lead.js';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Helper: Setup Nodemailer Transporter
 const getTransporter = () => {
@@ -220,6 +226,97 @@ export const getMyLeads = async (req, res) => {
       count: leads.length,
       leads,
     });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// @desc    Customer self-update: upload additional documents to existing lead
+// @route   PATCH /api/leads/:id/documents
+// @access  Public (no auth, keyed by lead ID)
+export const updateCustomerDocuments = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid application reference ID.' });
+    }
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Application not found. Please check your Reference ID.' });
+    }
+
+    const newDocUrls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+
+    if (newDocUrls.length === 0) {
+      return res.status(400).json({ success: false, message: 'No documents were uploaded.' });
+    }
+
+    // Append new docs to existing ones
+    lead.documentUrls = [...(lead.documentUrls || []), ...newDocUrls];
+    await lead.save();
+
+    res.json({
+      success: true,
+      message: `${newDocUrls.length} document(s) added successfully.`,
+      documentCount: lead.documentUrls.length,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Customer: get documents for a lead
+// @route   GET /api/leads/:id/documents
+// @access  Public
+export const getLeadDocuments = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid application reference ID.' });
+    }
+    const lead = await Lead.findById(id).select('documentUrls');
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Application not found.' });
+    }
+    res.json({ success: true, documents: lead.documentUrls || [] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Customer: delete one document from a lead by index
+// @route   DELETE /api/leads/:id/documents/:docIndex
+// @access  Public
+export const deleteCustomerDocument = async (req, res) => {
+  try {
+    const { id, docIndex } = req.params;
+    const idx = parseInt(docIndex, 10);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: 'Invalid application reference ID.' });
+    }
+    if (isNaN(idx)) {
+      return res.status(400).json({ success: false, message: 'Invalid document index.' });
+    }
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Application not found.' });
+    }
+    if (idx < 0 || idx >= lead.documentUrls.length) {
+      return res.status(400).json({ success: false, message: 'Document index out of range.' });
+    }
+
+    // Try to delete physical file from disk
+    const relPath = lead.documentUrls[idx];
+    const absPath = path.join(__dirname, '..', relPath.startsWith('/') ? relPath.slice(1) : relPath);
+    try { if (fs.existsSync(absPath)) fs.unlinkSync(absPath); } catch (_) {}
+
+    lead.documentUrls.splice(idx, 1);
+    await lead.save();
+
+    res.json({ success: true, message: 'Document deleted.', documents: lead.documentUrls });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

@@ -23,7 +23,11 @@ export default function FloatingActions() {
   const whatsappMessage = encodeURIComponent("Hello Vibhuti Enterprise, I am looking for financial/loan consultation. Please guide me.");
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   if (location.pathname.startsWith('/admin')) {
@@ -34,68 +38,71 @@ export default function FloatingActions() {
     <>
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 w-10 h-10 rounded-lg bg-charcoal-800 border border-charcoal-700 text-charcoal-400 hover:text-charcoal-100 hover:border-charcoal-400 flex items-center justify-center shadow-lg transition-all duration-300 ${showScrollTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+        className={`fixed bottom-20 right-4 z-40 w-10 h-10 rounded-lg bg-charcoal-800 border border-charcoal-700 text-charcoal-400 hover:text-charcoal-100 hover:border-charcoal-400 flex items-center justify-center shadow-lg transition-all duration-300 ${showScrollTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'}`}
         title="Scroll to Top"
       >
         <ArrowUp className="w-4 h-4" />
       </button>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-charcoal-950/95 backdrop-blur-md border-t border-charcoal-800 px-3 py-2.5 flex items-center justify-between gap-2">
-        <button
-          onClick={() => setShowCallMenu(!showCallMenu)}
-          className="flex-1 min-w-0 px-2 py-2.5 rounded-lg bg-charcoal-800 border border-charcoal-700 text-charcoal-100 text-xs font-semibold tracking-tight flex items-center justify-center gap-1"
-        >
-          <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
-          <span className="truncate">Call Us</span>
-        </button>
+      {/* Action Bar — all devices */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-charcoal-950/95 backdrop-blur-md border-t border-charcoal-800">
+        <div className="max-w-lg mx-auto px-4 py-2.5 flex items-center justify-center gap-2.5">
+          <button
+            onClick={() => setShowCallMenu(!showCallMenu)}
+            className="flex-1 max-w-[160px] px-3 py-2.5 rounded-xl bg-charcoal-800 border border-charcoal-700 hover:border-charcoal-500 hover:bg-charcoal-700 text-charcoal-100 text-xs font-semibold tracking-tight flex items-center justify-center gap-1.5 transition-all"
+          >
+            <Phone className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
+            <span className="truncate">Call Us</span>
+          </button>
 
-        <button
-          onClick={() => navigate('/apply-loan')}
-          className="flex-[1.5] min-w-0 px-2 py-2.5 rounded-lg bg-teal-500 text-charcoal-950 text-xs font-bold flex items-center justify-center gap-1"
-        >
-          <Send className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="truncate">Apply Now</span>
-        </button>
+          <button
+            onClick={() => navigate('/apply-loan')}
+            className="flex-[1.5] max-w-[200px] px-3 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-charcoal-950 text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg shadow-teal-900/30 transition-all"
+          >
+            <Send className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="truncate">Apply Now</span>
+          </button>
 
-        <a
-          href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 min-w-0 px-2 py-2.5 rounded-lg bg-emerald-700 border border-emerald-600/40 text-white text-xs font-semibold tracking-tight flex items-center justify-center gap-1"
-        >
-          <MessageSquare className="w-3.5 h-3.5 flex-shrink-0" />
-          <span className="truncate">WhatsApp</span>
-        </a>
+          <a
+            href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 max-w-[160px] px-3 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 border border-emerald-600/40 text-white text-xs font-semibold tracking-tight flex items-center justify-center gap-1.5 transition-all"
+          >
+            <MessageSquare className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="truncate">WhatsApp</span>
+          </a>
 
-        {showCallMenu && (
-          <>
-            <div className="fixed inset-0 z-10 bg-black/50" onClick={() => setShowCallMenu(false)} />
-            <div className="fixed bottom-20 left-4 right-4 bg-charcoal-900 border border-charcoal-700 rounded-xl p-4 z-20 shadow-xl">
-              <div className="flex justify-between items-center border-b border-charcoal-800 pb-2 mb-3">
-                <span className="text-xs font-semibold text-teal-400">Contact Advisors</span>
-                <button onClick={() => setShowCallMenu(false)} className="text-charcoal-500 hover:text-charcoal-100">
-                  <X className="w-4 h-4" />
-                </button>
+          {showCallMenu && (
+            <>
+              <div className="fixed inset-0 z-10 bg-black/50" onClick={() => setShowCallMenu(false)} />
+              <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-sm bg-charcoal-900 border border-charcoal-700 rounded-xl p-4 z-20 shadow-2xl">
+                <div className="flex justify-between items-center border-b border-charcoal-800 pb-2 mb-3">
+                  <span className="text-xs font-semibold text-teal-400">Contact Advisors</span>
+                  <button onClick={() => setShowCallMenu(false)} className="text-charcoal-500 hover:text-charcoal-100">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {contacts.map((contact, idx) => (
+                    <a
+                      key={idx}
+                      href={`tel:${contact.phone}`}
+                      onClick={() => setShowCallMenu(false)}
+                      className="flex items-center justify-between p-3 bg-charcoal-800/50 rounded-lg hover:bg-charcoal-800 transition-colors"
+                    >
+                      <div>
+                        <span className="block text-sm font-medium text-charcoal-100">{contact.name}</span>
+                        <span className="text-xs text-charcoal-400">{contact.phone}</span>
+                      </div>
+                      <Phone className="w-4 h-4 text-teal-400" />
+                    </a>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-2">
-                {contacts.map((contact, idx) => (
-                  <a
-                    key={idx}
-                    href={`tel:${contact.phone}`}
-                    onClick={() => setShowCallMenu(false)}
-                    className="flex items-center justify-between p-3 bg-charcoal-800/50 rounded-lg hover:bg-charcoal-800 transition-colors"
-                  >
-                    <div>
-                      <span className="block text-sm font-medium text-charcoal-100">{contact.name}</span>
-                      <span className="text-xs text-charcoal-400">{contact.phone}</span>
-                    </div>
-                    <Phone className="w-4 h-4 text-teal-400" />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );
