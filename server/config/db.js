@@ -2,7 +2,9 @@ import mongoose from 'mongoose';
 
 export const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/vibhuti_db');
+    const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/vibhuti_db', {
+      serverSelectionTimeoutMS: 5000
+    });
     console.log(`MongoDB Connected successfully: ${conn.connection.host}`);
   } catch (error) {
     console.error(`MongoDB connection error: ${error.message}`);

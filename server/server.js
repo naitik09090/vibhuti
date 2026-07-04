@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 
@@ -21,8 +22,19 @@ import { blogPosts } from './data/staticBlogs.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load ENV
-dotenv.config({ path: path.join(__dirname, '.env') });
+// Load ENV from candidate paths
+const envPaths = [
+  path.join(__dirname, '.env'),
+  path.join(process.cwd(), 'server', '.env'),
+  path.join(__dirname, '..', '..', 'server', '.env')
+];
+for (const envPath of envPaths) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+    console.log(`Loaded ENV from: ${envPath}`);
+    break;
+  }
+}
 
 // Connect DB
 connectDB();

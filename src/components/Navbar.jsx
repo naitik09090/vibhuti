@@ -19,6 +19,7 @@ export default function Navbar() {
   // Loan Approval/Rejection Popup States
   const [notifyLead, setNotifyLead] = useState(null);
   const [showNotifyModal, setShowNotifyModal] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -80,8 +81,6 @@ export default function Navbar() {
   if (location.pathname.startsWith('/admin')) {
     return null;
   }
-
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const confirmLogout = () => {
     setIsOpen(false);
