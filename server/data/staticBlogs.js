@@ -8,7 +8,7 @@ export const blogPosts = [
     summary: 'A detailed 2000+ words handbook for Gujarati entrepreneurs, salaried professionals, and real estate borrowers. Learn how to optimize document compilation, audit sheets, and CIBIL scores to negotiate the lowest interest rates on Home Loans, Business Loans, and OD/CC limits.',
     coverImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80',
     tags: 'SEO Loan Guide',
-    author: 'Harish Vibhuti',
+    author: '',
     createdAt: '2026-07-01T10:00:00.000Z',
     content: `INTRODUCTION: SURAT'S CREDIT DYNAMICS
 Surat, Gujarat, stands as one of the world's most vibrant commercial and manufacturing hubs. Globally celebrated for its diamond cutting and polishing factories, massive textile industrial estates (like Sachin GIDC and Pandesara GIDC), and dynamic real estate growth, Surat runs on strategic credit flow. Whether you are a business owner in Varachha requiring capital to fund machinery acquisitions or a salaried professional looking for the "Best Home Loan in Surat" to purchase a residential flat in Adajan, securing bank credit is essential for success.
@@ -101,7 +101,7 @@ Navigating these stages successfully requires expert guidance. Since 2015, Vibhu
     summary: 'A comprehensive 2000+ words guide to navigating home loan benchmarks and finding the cheapest home loan structures in Adajan, Vesu, and Surat residential circles.',
     coverImage: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop&q=80',
     tags: 'Home Loan',
-    author: 'Harish Vibhuti',
+    author: '',
     createdAt: '2026-06-30T10:00:00.000Z',
     content: `INTRODUCTION: THE SURAT HOME LOAN MARKET
 Securing a home loan in Surat is a major milestone. With rapid urban expansion in Adajan, Vesu, Pal, Jahangirpura, and Katargam, thousands of families are seeking home loans to fund their dream residential flats, duplexes, or constructed bungalows. When entering this market, understanding the interest rate structure of public and private sector banks in India is crucial. This detailed guide analyzes interest rate benchmarks, property valuation, legal documentation, and financial planning systems to secure the cheapest rate.
@@ -170,7 +170,7 @@ Navigating home loan interest benchmarks, LTV metrics, legal search reports, and
     summary: 'A comprehensive 2000+ words guide on the differences between CC and OD working capital facilities for diamond and textile brokers in Surat.',
     coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80',
     tags: 'Business Loan',
-    author: 'Anjali Sharma',
+    author: '',
     createdAt: '2026-06-29T10:00:00.000Z',
     content: `INTRODUCTION: WORKING CAPITAL IN SURAT'S SME SECTOR
 Surat is a dynamic commercial city driven by the textile, diamond, and embroidery industries. These businesses experience fast transaction cycles, purchase raw materials in bulk, and manage credit cycles for buyers. Relying on standard term loans is often inefficient because business credit needs change daily. This is where working capital limits—specifically Cash Credit (CC) and Overdraft (OD) channels—play a critical role. This 2000+ words guide details how these limits work, their key differences, security requirements, and bank renewal systems.
@@ -239,7 +239,7 @@ Securing and managing Cash Credit or Overdraft limits requires careful structuri
     summary: 'A detailed 2000+ words guide to unlocking the capital tied up in commercial shops, industrial plots, or flats in Surat at the lowest interest rates.',
     coverImage: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&auto=format&fit=crop&q=80',
     tags: 'Mortgage Loan',
-    author: 'Harish Vibhuti',
+    author: '',
     createdAt: '2026-06-28T10:00:00.000Z',
     content: `INTRODUCTION: CAPITAL LOCKED IN REAL ESTATE
 For property owners in Surat, real estate is a valuable asset class. Unlocking the capital tied up in commercial offices in Ring Road, industrial plots in Sachin GIDC, or residential flats in Adajan through a Loan Against Property (LAP) is a cost-effective way to raise long-term capital. LAP offers lower interest rates compared to unsecured personal or business loans. This 2000+ words guide explores how LAP works, eligibility criteria, property valuation, legal searches, and financial planning systems to secure the best loan terms.
@@ -308,7 +308,7 @@ Navigating property valuations, title searches, municipal permissions, and bank 
     summary: 'A detailed 2000+ words guide to understanding education loan moratoriums, tax exemptions under Section 80E, and foreign study financing rules.',
     coverImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&auto=format&fit=crop&q=80',
     tags: 'Education Loan',
-    author: 'Anjali Sharma',
+    author: '',
     createdAt: '2026-06-27T10:00:00.000Z',
     content: `INTRODUCTION: INVESTING IN GLOBAL EDUCATION
 With globalization and a growing focus on higher education, thousands of students from Surat travel to universities in India and abroad (USA, UK, Canada, Australia, Germany) every year. Studying overseas offers great opportunities, but tuition fees and living costs can be high. Securing a student loan is an effective way to fund this investment. This 2000+ words guide covers education loan moratoriums, co-borrower requirements, Section 80E tax benefits, and step-by-step document checklists for visa processing.
@@ -365,7 +365,7 @@ Navigating university approvals, co-borrower checks, tax rebates, and bank CPUs 
     summary: 'A detailed 2000+ words guide to actionable credit habits to avoid loan rejections, CIBIL reporting errors, and qualify for discount rates.',
     coverImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80',
     tags: 'Credit Score',
-    author: 'Harish Vibhuti',
+    author: '',
     createdAt: '2026-06-26T10:00:00.000Z',
     content: `INTRODUCTION: THE IMPACT OF YOUR CREDIT PROFILE
 Your TransUnion CIBIL score is a credit score check card that lenders use to evaluate credit applications. Whether you are applying for a home loan in Surat to purchase a residential flat or seeking a business loan for machinery modernization, lenders check your credit score first. A CIBIL score above 750 shows banks that you manage credit responsibly, qualifying you for faster approvals and lower interest rates. This 2000+ words guide details credit score calculations, credit checks, cleaning up reporting errors, and building healthy credit habits.
@@ -422,7 +422,7 @@ Building and maintaining a credit score above 750 is a continuous process. Since
     summary: 'A detailed 2000+ words financial comparison of collateral-free loans versus mortgage limits for purchasing textile weaving and embroidery machinery in Surat.',
     coverImage: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&auto=format&fit=crop&q=80',
     tags: 'Business Loan',
-    author: 'Anjali Sharma',
+    author: '',
     createdAt: '2026-06-25T10:00:00.000Z',
     content: `INTRODUCTION: CAPITAL REQUISITIONS IN TEXTILE ESTABLISHED DISTRICTS
 Surat's textile and manufacturing sectors, including industrial units in Sachin GIDC, Pandesara GIDC, and Kadodara, require continuous capital injection to upgrade machinery (such as advanced embroidery machines, water jet looms, and digital printing equipment). When raising capital, business owners must choose between secured business loans (backed by property collateral) and unsecured business loans (sanctioned based on cash flows and financial transactions). This 2000+ words guide compares both loan structures, interest rates, margins, processing times, and eligibility criteria.

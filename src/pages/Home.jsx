@@ -601,7 +601,7 @@ export default function Home() {
                           "{t.text}"
                         </p>
                       </div>
-                      <div className="flex items-center gap-3 pt-5 mt-4 border-t border-charcoal-600/20">
+                      {/* <div className="flex items-center gap-3 pt-5 mt-4 border-t border-charcoal-600/20">
                         <div className="w-9 h-9 rounded-full bg-charcoal-950 border border-charcoal-600/30 flex items-center justify-center flex-shrink-0 group-hover:bg-charcoal-100 group-hover:border-charcoal-400 transition-all">
                           <span className="text-[11px] font-semibold text-charcoal-400 group-hover:text-charcoal-600 transition-colors">{initials}</span>
                         </div>
@@ -609,7 +609,7 @@ export default function Home() {
                           <h4 className="font-display font-semibold text-charcoal-100 text-sm">{t.name}</h4>
                           <p className="text-xs text-charcoal-400 mt-0.5">{t.role}</p>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </SwiperSlide>
                 );
