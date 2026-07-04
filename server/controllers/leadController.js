@@ -5,8 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const resolvedFilename = typeof import.meta !== 'undefined' && import.meta.url ? fileURLToPath(import.meta.url) : (typeof __filename !== 'undefined' ? __filename : '');
+const resolvedDirname = typeof import.meta !== 'undefined' && import.meta.url ? path.dirname(resolvedFilename) : (typeof __dirname !== 'undefined' ? __dirname : '');
 
 // Helper: Setup Nodemailer Transporter
 const getTransporter = () => {

@@ -19,14 +19,14 @@ import BlogPost from './models/BlogPost.js';
 import { blogPosts } from './data/staticBlogs.js';
 
 // Serve static uploaded documents
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const resolvedFilename = typeof import.meta !== 'undefined' && import.meta.url ? fileURLToPath(import.meta.url) : (typeof __filename !== 'undefined' ? __filename : '');
+const resolvedDirname = typeof import.meta !== 'undefined' && import.meta.url ? path.dirname(resolvedFilename) : (typeof __dirname !== 'undefined' ? __dirname : '');
 
 // Load ENV from candidate paths
 const envPaths = [
-  path.join(__dirname, '.env'),
+  path.join(resolvedDirname, '.env'),
   path.join(process.cwd(), 'server', '.env'),
-  path.join(__dirname, '..', '..', 'server', '.env')
+  path.join(resolvedDirname, '..', '..', 'server', '.env')
 ];
 for (const envPath of envPaths) {
   if (fs.existsSync(envPath)) {
@@ -73,7 +73,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(resolvedDirname, 'uploads')));
 
 // Mount API Endpoints
 app.use('/api/auth', authRoutes);

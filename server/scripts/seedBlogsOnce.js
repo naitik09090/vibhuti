@@ -5,11 +5,11 @@ import mongoose from 'mongoose';
 import BlogPost from '../models/BlogPost.js';
 import { blogPosts } from '../data/staticBlogs.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const resolvedFilename = typeof import.meta !== 'undefined' && import.meta.url ? fileURLToPath(import.meta.url) : (typeof __filename !== 'undefined' ? __filename : '');
+const resolvedDirname = typeof import.meta !== 'undefined' && import.meta.url ? path.dirname(resolvedFilename) : (typeof __dirname !== 'undefined' ? __dirname : '');
 
 // Load env variables
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+dotenv.config({ path: path.join(resolvedDirname, '..', '.env') });
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/vibhuti_db';
 
